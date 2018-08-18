@@ -1,0 +1,69 @@
+<div ngClass.lt-md="mt-25" ngClass.gt-sm="mt-50" fxLayout="row" fxLayoutAlign="center">
+  <mat-card ngClass.lt-md="width-500" ngClass.gt-sm="width-800">
+    <mat-card-header fxLayout="row" fxLayoutAlign="center">
+      <h2>Sales Log for {{ salesLog.id | idToDescr }}</h2>
+    </mat-card-header>
+      <mat-card-actions>
+      <div class="button-row" fxLayout="row" fxLayoutAlign="center">
+        <button mat-raised-button color="primary" [routerLink]="['edit']" *ngIf="isAuthenticated()">Edit</button>
+        <button mat-raised-button color="warn" (click)="onDelete()" *ngIf="isAuthenticated()">Delete</button>
+      </div>
+    </mat-card-actions>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+      <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+        <!-- Index Column -->
+        <ng-container matColumnDef="index">
+          <mat-header-cell *matHeaderCellDef> # </mat-header-cell>
+          <mat-cell *matCellDef="let index = index"> {{index + 1}} </mat-cell>
+        </ng-container>
+
+        <!-- Stock Number Column -->
+        <ng-container matColumnDef="stockNumber">
+          <mat-header-cell *matHeaderCellDef> Stock No. </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.stockNumber}} </mat-cell>
+        </ng-container>
+
+        <!-- Unit Type Column -->
+        <ng-container matColumnDef="unitType">
+          <mat-header-cell *matHeaderCellDef> N/U </mat-header-cell>
+          <mat-cell *matCellDef="let element" [matTooltip]="'Unit type: ' + element.unitType"> {{element.unitType.substr(0,1)}} </mat-cell>
+        </ng-container>
+
+        <!-- Split Column -->
+        <ng-container matColumnDef="split">
+          <mat-header-cell *matHeaderCellDef> Split </mat-header-cell>
+          <mat-cell *matCellDef="let element" [matTooltip]="element.split ? 'Split deal' : 'Deal is not split'"> {{element.split ? 'X' : '-'}} </mat-cell>
+        </ng-container>
+
+        <!-- Sold Date Column -->
+        <ng-container matColumnDef="soldDate">
+          <mat-header-cell *matHeaderCellDef> Sold </mat-header-cell>
+          <mat-cell *matCellDef="let element" matTooltip="Sold date"> {{formatDate(element.soldDate)}} </mat-cell>
+        </ng-container>
+
+        <!-- Front Gross Amount Column -->
+        <ng-container matColumnDef="frontGrossAmount">
+          <mat-header-cell *matHeaderCellDef> Front Gross </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.frontGrossAmount || 0 | number:'1.2-2'}} </mat-cell>
+        </ng-container>
+
+        <!-- Back Gross Amount Column -->
+        <ng-container matColumnDef="backGrossAmount">
+          <mat-header-cell *matHeaderCellDef> Back Gross </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.backGrossAmount || 0 | number:'1.2-2'}} </mat-cell>
+        </ng-container>
+
+        <!-- Total Gross Amount Column -->
+        <ng-container matColumnDef="totalGrossAmount">
+          <mat-header-cell *matHeaderCellDef> Total Gross </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{getTotalGross(element.frontGrossAmount || 0, element.backGrossAmount || 0) | number:'1.2-2'}} </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    </mat-card-content>
+  </mat-card>
+</div>

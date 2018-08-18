@@ -1,0 +1,19 @@
+<div ngClass.lt-md="mt-25" ngClass.gt-sm="mt-50" fxLayout="row" fxLayoutAlign="center">
+  <mat-card ngClass.lt-md="width-300" ngClass.gt-sm="width-500">
+    <mat-card-actions>
+      <div fxLayout="row" fxLayoutAlign="center">
+        <button mat-stroked-button color="primary" routerLink="new" [disabled]="!isAuthenticated()">New Sales Log</button>
+      </div>
+    </mat-card-actions>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+      <mat-nav-list>
+        <app-sales-log-item
+          *ngFor="let salesLog of salesLogs; let i = index"
+          [salesLog]="salesLog"
+          [index]="i"
+        ></app-sales-log-item>
+      </mat-nav-list>
+    </mat-card-content>
+  </mat-card>
+</div>

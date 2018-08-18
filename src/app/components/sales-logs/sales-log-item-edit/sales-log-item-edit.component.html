@@ -1,0 +1,59 @@
+<div ngClass.lt-md="mt-5" ngClass.gt-sm="mt-10">
+  <form
+    class="example-form"
+    [formGroup]="salesLogItemForm"
+    (ngSubmit)="null"
+    #f="ngForm"
+    fxLayout="row"
+    fxLayout.xs="column"
+    fxLayoutAlign="center"
+    fxLayoutGap="10px"
+    fxLayoutGap.xs="0"
+    >
+
+    <mat-form-field fxFlex="15%">
+      <input
+        matInput
+        type="text"
+        placeholder="Stock Number"
+        formControlName="stockNumber"
+        (blur)="onBlurStockNumber(f.form.controls['stockNumber'])"
+      >
+    </mat-form-field>
+    <mat-form-field fxFlex="15%">
+      <input
+        matInput
+        type="text"
+        placeholder="Unit Type"
+        formControlName="unitType"
+      >
+    </mat-form-field>
+    <mat-form-field fxFlex="15%">
+      <input
+        matInput
+        type="number"
+        placeholder="Front Gross"
+        formControlName="frontGrossAmount"
+        (blur)="onBlurAmount()"
+      >
+    </mat-form-field>
+    <mat-form-field fxFlex="15%">
+      <input
+        matInput
+        type="number"
+        placeholder="Back Gross"
+        formControlName="backGrossAmount"
+        (blur)="onBlurAmount()"
+      >
+    </mat-form-field>
+    <mat-form-field fxFlex="15%">
+      <input
+        matInput
+        type="number"
+        placeholder="Total Gross"
+        formControlName="totalGrossAmount"
+      >
+    </mat-form-field>
+
+  </form>
+</div>
