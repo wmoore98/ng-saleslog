@@ -14,9 +14,8 @@ import { SalesLogEditComponent } from './sales-log-edit/sales-log-edit.component
 import { SalesLogsRoutingModule } from './sales-logs-routing.module';
 import { MaterialModule } from '../../material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { IdToDescrPipe } from './shared/idToDescr.pipe';
-import { SalesLogItemEditComponent } from './sales-log-item-edit/sales-log-item-edit.component';
-import { TestComponent } from './test/test.component';
+import { IdToDescriptionPipe } from './shared/idToDescription.pipe';
+import { SalesLogItemEditComponent } from './sales-log-edit/sales-log-item-edit/sales-log-item-edit.component';
 
 @NgModule({
   declarations: [
@@ -26,9 +25,8 @@ import { TestComponent } from './test/test.component';
     SalesLogItemComponent,
     SalesLogDetailComponent,
     SalesLogEditComponent,
-    IdToDescrPipe,
-    SalesLogItemEditComponent,
-    TestComponent
+    IdToDescriptionPipe,
+    SalesLogItemEditComponent
   ],
   imports: [
     CommonModule,

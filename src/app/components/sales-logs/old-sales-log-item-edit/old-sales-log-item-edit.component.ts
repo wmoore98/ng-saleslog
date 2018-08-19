@@ -10,7 +10,7 @@ const DECIMAL_2 = /^[0-9]+[0-9]*(?:\.[0-9]{1,2})?$/;
   templateUrl: './sales-log-item-edit.component.html',
   styleUrls: ['./sales-log-item-edit.component.css']
 })
-export class SalesLogItemEditComponent implements OnInit {
+export class OldSalesLogItemEditComponent implements OnInit {
 
   @Input() editItem: SalesLogEntry;
   // editItem: SalesLogEntry;

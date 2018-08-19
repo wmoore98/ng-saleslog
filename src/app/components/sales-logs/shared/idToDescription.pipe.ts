@@ -1,9 +1,9 @@
 import { PipeTransform, Pipe } from '@angular/core';
 
 @Pipe({
-  name: 'idToDescr'
+  name: 'idToDescription'
 })
-export class IdToDescrPipe implements PipeTransform {
+export class IdToDescriptionPipe implements PipeTransform {
   transform(value: any) {
     let returnStr = '';
     if (value && value.length === 7) {

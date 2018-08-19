@@ -1,0 +1,86 @@
+<div [formGroup]="item">
+
+  <!-- Stock Number field -->
+  <mat-form-field fxFlex="8%">
+    <input
+      matInput
+      type="text"
+      placeholder="Stock Number"
+      formControlName="stockNumber"
+      (blur)="onBlurStockNumber()"
+    >
+  </mat-form-field>
+
+  <!-- Unit Type field -->
+  <mat-form-field fxFlex="5%">
+    <input
+      matInput
+      type="text"
+      placeholder="Type"
+      formControlName="unitType"
+    >
+  </mat-form-field>
+
+  <!-- Split Indicator field -->
+  <mat-checkbox
+    class="mt-15"
+    matInput
+    formControlName="split"
+    >Split
+  </mat-checkbox>
+
+  <!-- Sold Date field -->
+  <mat-form-field fxFlex="8%">
+    <input
+      matInput
+      [matDatepicker]="picker"
+      placeholder="Sold date"
+      formControlName="soldDate"
+    >
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <!-- Front Gross field -->
+  <mat-form-field fxFlex="10%">
+    <input
+      matInput
+      type="number"
+      placeholder="Front Gross"
+      formControlName="frontGrossAmount"
+      (blur)="onBlurAmount()"
+    >
+  </mat-form-field>
+
+  <!-- Back Gross field -->
+  <mat-form-field fxFlex="10%">
+    <input
+      matInput
+      type="number"
+      placeholder="Back Gross"
+      formControlName="backGrossAmount"
+      (blur)="onBlurAmount()"
+    >
+  </mat-form-field>
+
+  <!-- Total Gross field -->
+  <mat-form-field fxFlex="10%">
+    <input
+      matInput
+      type="number"
+      placeholder="Total Gross"
+      formControlName="totalGrossAmount"
+    >
+  </mat-form-field>
+
+  <!-- Delete Item field -->
+  <div fxFlex>
+    <button
+      mat-icon-button
+      type="button"
+      (click)="onDeleteEntry()">
+      <mat-icon aria-label="Delete entry icon">delete</mat-icon>
+    </button>
+  </div>
+
+</div>

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
-import { Decimal } from 'decimal.js';
+import { FormGroup, FormControl, FormArray } from '@angular/forms';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDatepicker } from '@angular/material/datepicker';
@@ -9,6 +8,7 @@ import { MatDatepicker } from '@angular/material/datepicker';
 import { SalesLogService } from '../shared/sales-log.service';
 import { SalesLog } from '../shared/sales-log.model';
 import { SalesLogEntry } from '../shared/sales-log-entry.model';
+import { SalesLogItemEditComponent } from './sales-log-item-edit/sales-log-item-edit.component';
 
 import * as _moment from 'moment';
 // added '"allowSyntheticDefaultImports": true' to compiler options in tsconfig.app.json to permit 'import {default...'
@@ -42,7 +42,6 @@ const DECIMAL_2 = /^[0-9]+[0-9]*(?:\.[0-9]{1,2})?$/;
     // application's root module. We provide it at the component level here, due to limitations of
     // our example generation script.
     {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
-
     {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
   ],
 })
@@ -52,8 +51,6 @@ export class SalesLogEditComponent implements OnInit {
   editMode = false;
   salesLogForm: FormGroup;
 
-
-  // logDate = new FormControl(moment());
   logDate: FormControl;
   logId: string;
 
@@ -86,7 +83,7 @@ export class SalesLogEditComponent implements OnInit {
       logDate = moment(logId);
       if (salesLog['entries']) {
         for (const entry of salesLog.entries) {
-          this.initEntryForm(entry, entries);
+          SalesLogItemEditComponent.initEntryForm(entry, entries);
         }
       }
     }
@@ -99,65 +96,6 @@ export class SalesLogEditComponent implements OnInit {
       'entries': entries
     });
 
-  }
-
-  initEntryForm(entry: SalesLogEntry, entries: FormArray) {
-    entries.push(
-      new FormGroup({
-        'stockNumber': new FormControl(entry.stockNumber, Validators.required),
-        'unitType': new FormControl({value: entry.unitType, disabled: true}, Validators.required),
-        'split': new FormControl(entry.split || false, Validators.required),
-        'soldDate': new FormControl(entry.soldDate || null, Validators.required),
-        'frontGrossAmount': new FormControl(entry.frontGrossAmount || entry.grossAmount, [
-          Validators.required,
-          Validators.pattern(DECIMAL_2)
-        ]),
-        'backGrossAmount': new FormControl(entry.backGrossAmount || 0, [
-          Validators.required,
-          Validators.pattern(DECIMAL_2)
-        ]),
-        'totalGrossAmount': new FormControl(
-          {value: Decimal.add(entry.frontGrossAmount || entry.grossAmount, entry.backGrossAmount || 0), disabled: true}, [
-          Validators.required,
-          Validators.pattern(DECIMAL_2)
-        ]),
-      })
-    );
-  }
-
-  getUnitType(index: number) {
-    return (<FormArray>this.salesLogForm.get('entries')).at(index).get('unitType').value;
-  }
-
-  onBlurStockNumber(index: number) {
-    const currentRow = (<FormArray>this.salesLogForm.get('entries')).at(index);
-    const control = currentRow.get('stockNumber');
-    if (!control.dirty) { return; }
-
-    // If control is dirty, convert stock number to uppercase
-    const stockNumber = control.value.toUpperCase();
-    if (control.value !== stockNumber) {
-      control.setValue(stockNumber);
-    }
-
-    // Derive unit type based on format of stock number
-    let unitType = 'New';
-    if (/[A-Z]/.test(stockNumber.substr(1))) {
-      unitType = 'Used';
-    }
-    // Set unit type
-    currentRow.get('unitType').setValue(unitType);
-
-  }
-
-  onBlurAmount(index: number) {
-    // The following caused errors with something as simple as 3535.35 + 1212.12 = 4747.46999
-    // currentRow.get('frontGrossAmount').value + currentRow.get('backGrossAmount').value
-    // So using decimal.js
-    const currentRow = (<FormArray>this.salesLogForm.get('entries')).at(index);
-    const frontGross = new Decimal(currentRow.get('frontGrossAmount').value);
-    const backGross = new Decimal(currentRow.get('backGrossAmount').value);
-    currentRow.get('totalGrossAmount').setValue(Decimal.add(frontGross, backGross));
   }
 
   getControls() {
@@ -180,12 +118,14 @@ export class SalesLogEditComponent implements OnInit {
   }
 
   onAddEntry() {
-    this.initEntryForm(new SalesLogEntry('', '', false, null, 0, 0, 0), (<FormArray>this.salesLogForm.get('entries')));
+    const entry = new SalesLogEntry('', '', false, null, 0, 0, 0);
+    const entries = (<FormArray>this.salesLogForm.get('entries'));
+    SalesLogItemEditComponent.initEntryForm(entry, entries);
   }
 
-  onDeleteEntry(index: number) {
-    (<FormArray>this.salesLogForm.get('entries')).removeAt(index);
-  }
+  // onDeleteEntry(index: number) {
+  //   (<FormArray>this.salesLogForm.get('entries')).removeAt(index);
+  // }
 
   chosenYearHandler(normalizedYear: Moment) {
     const ctrlValue = this.logDate.value;

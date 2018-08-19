@@ -2,7 +2,7 @@
   <mat-card ngClass.lt-md="width-600" ngClass.gt-sm="width-800">
     <mat-card-header fxLayout="row" fxLayoutAlign="center">
       <mat-card-title>
-        <div class="mat-display-1">Sales Log for {{ logId | idToDescr }}</div>
+        <div class="mat-display-1">Sales Log for {{ logId | idToDescription }}</div>
       </mat-card-title>
     </mat-card-header>
     <form
@@ -13,14 +13,14 @@
       <mat-form-field>
         <input matInput [matDatepicker]="dp" placeholder="Month and Year" [formControl]="logDate">
         <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
-        <mat-datepicker #dp
-                        startView="year"
-                        (yearSelected)="chosenYearHandler($event)"
-                        (monthSelected)="chosenMonthHandler($event, dp)"
-                        panelClass="example-month-picker">
+        <mat-datepicker
+          #dp
+          startView="year"
+          (yearSelected)="chosenYearHandler($event)"
+          (monthSelected)="chosenMonthHandler($event, dp)"
+          panelClass="example-month-picker">
         </mat-datepicker>
       </mat-form-field>
-      <app-test></app-test>
       <mat-card-actions>
         <div class="button-row" fxLayout="row" fxLayoutAlign="center">
           <button
@@ -35,84 +35,32 @@
             routerLink="../">Cancel</button>
         </div>
       </mat-card-actions>
+
+
+            <!-- <item-control
+              *ngFor="let item of myForm.get('items').controls; let i=index"
+              [index]="i"
+              [item]="item"
+              (removed)="myForm.get('items').removeAt($event)">
+            </item-control> -->
+
       <mat-card-content>
         <div class="row">
           <div class="col-xs-12" formArrayName="entries">
+            <!-- <div class="container"
+              fxLayout
+              fxLayout.xs="column"
+              fxLayoutAlign="center"
+              fxLayoutGap="10px"
+              fxLayoutGap.xs="0"
+              style="margin-top: 10px"> -->
             <div class="container"
-                fxLayout
-                fxLayout.xs="column"
-                fxLayoutAlign="center"
-                fxLayoutGap="10px"
-                fxLayoutGap.xs="0"
-                *ngFor="let entryCtrl of getControls(); let i = index"
-                [formGroupName]="i"
-                style="margin-top: 10px">
-              <mat-form-field fxFlex="8%">
-                <input
-                  matInput
-                  type="text"
-                  placeholder="Stock Number"
-                  formControlName="stockNumber"
-                  (blur)="onBlurStockNumber(i)"
-                >
-              </mat-form-field>
-              <mat-form-field fxFlex="5%">
-                <input
-                  matInput
-                  type="text"
-                  placeholder="Type"
-                  formControlName="unitType"
-                >
-              </mat-form-field>
-              <mat-checkbox
-                class="mt-15"
-                matInput
-                formControlName="split"
-                >Split
-              </mat-checkbox>
-              <mat-form-field fxFlex="8%">
-                <input
-                  matInput
-                  [matDatepicker]="picker"
-                  placeholder="Sold date"
-                  formControlName="soldDate"
-                >
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-              </mat-form-field>
-              <mat-form-field fxFlex="10%">
-                <input
-                  matInput
-                  type="number"
-                  placeholder="Front Gross"
-                  formControlName="frontGrossAmount"
-                  (blur)="onBlurAmount(i)"
-                >
-              </mat-form-field>
-              <mat-form-field fxFlex="10%">
-                <input
-                  matInput
-                  type="number"
-                  placeholder="Back Gross"
-                  formControlName="backGrossAmount"
-                  (blur)="onBlurAmount(i)"
-                >
-              </mat-form-field>
-              <mat-form-field fxFlex="10%">
-                <input
-                  matInput
-                  type="number"
-                  placeholder="Total Gross"
-                  formControlName="totalGrossAmount"
-                >
-              </mat-form-field>
-              <div fxFlex>
-                <button
-                  mat-icon-button
-                  (click)="onDeleteEntry(i)">
-                  <mat-icon aria-label="Delete entry icon">delete</mat-icon>
-                </button>
-              </div>
+              style="margin-top: 10px">
+              <app-sales-log-item-edit
+                *ngFor="let item of getControls(); let i = index"
+                [index]="i"
+                [item]="item"
+                ></app-sales-log-item-edit>
             </div>
           </div>
         </div>
