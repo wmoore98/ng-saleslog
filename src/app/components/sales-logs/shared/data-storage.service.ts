@@ -14,6 +14,7 @@ export class DataStorageService {
   constructor(private http: Http,
     private authService: AuthService) { }
 
+
   storeSalesLog(salesLog: SalesLog) {
     // MUST PROVIDE A CASE FOR HANDLING A CHANGE TO -ID-
     // ALSO APP NEEDS TO WATCH FOR DUPLICATE ID's
@@ -22,6 +23,14 @@ export class DataStorageService {
     const logId = salesLog.id;
     console.log('storeSalesLog', salesLog);
     return this.http.put(`${databaseURL}/salesLogs/${user}/${logId}.json?auth=${token}`, salesLog);
+  }
+
+  destroySalesLog(salesLog: SalesLog) {
+    const token = this.authService.getToken();
+    const user = this.authService.getUser();
+    const logId = salesLog.id;
+    console.log('destroySalesLog', salesLog);
+    return this.http.delete(`${databaseURL}/salesLogs/${user}/${logId}.json?auth=${token}`);
   }
 
   getSalesLogs() {

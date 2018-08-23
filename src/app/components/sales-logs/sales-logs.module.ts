@@ -16,6 +16,7 @@ import { MaterialModule } from '../../material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { IdToDescriptionPipe } from './shared/idToDescription.pipe';
 import { SalesLogItemEditComponent } from './sales-log-edit/sales-log-item-edit/sales-log-item-edit.component';
+import { SalesLogDeleteDialogComponent } from './sales-log-detail/sales-log-delete-dialog/sales-log-delete-dialog.component';
 
 @NgModule({
   declarations: [
@@ -26,8 +27,10 @@ import { SalesLogItemEditComponent } from './sales-log-edit/sales-log-item-edit/
     SalesLogDetailComponent,
     SalesLogEditComponent,
     IdToDescriptionPipe,
-    SalesLogItemEditComponent
+    SalesLogItemEditComponent,
+    SalesLogDeleteDialogComponent
   ],
+  entryComponents: [SalesLogDeleteDialogComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -36,7 +39,8 @@ import { SalesLogItemEditComponent } from './sales-log-edit/sales-log-item-edit/
     MaterialModule,
     FlexLayoutModule,
     SalesLogsRoutingModule
-  ]
+  ],
+  providers: [ IdToDescriptionPipe ]
 })
 
 export class SalesLogsModule {

@@ -1,7 +1,7 @@
 <div [formGroup]="item">
 
   <!-- Stock Number field -->
-  <mat-form-field fxFlex="8%">
+  <mat-form-field>
     <input
       matInput
       type="text"
@@ -12,7 +12,7 @@
   </mat-form-field>
 
   <!-- Unit Type field -->
-  <mat-form-field fxFlex="5%">
+  <mat-form-field>
     <input
       matInput
       type="text"
@@ -30,7 +30,7 @@
   </mat-checkbox>
 
   <!-- Sold Date field -->
-  <mat-form-field fxFlex="8%">
+  <mat-form-field>
     <input
       matInput
       [matDatepicker]="picker"
@@ -42,7 +42,7 @@
   </mat-form-field>
 
   <!-- Front Gross field -->
-  <mat-form-field fxFlex="10%">
+  <mat-form-field>
     <input
       matInput
       type="number"
@@ -53,7 +53,7 @@
   </mat-form-field>
 
   <!-- Back Gross field -->
-  <mat-form-field fxFlex="10%">
+  <mat-form-field>
     <input
       matInput
       type="number"
@@ -64,7 +64,7 @@
   </mat-form-field>
 
   <!-- Total Gross field -->
-  <mat-form-field fxFlex="10%">
+  <mat-form-field>
     <input
       matInput
       type="number"
@@ -74,13 +74,11 @@
   </mat-form-field>
 
   <!-- Delete Item field -->
-  <div fxFlex>
-    <button
-      mat-icon-button
-      type="button"
-      (click)="onDeleteEntry()">
-      <mat-icon aria-label="Delete entry icon">delete</mat-icon>
-    </button>
-  </div>
+  <button
+    mat-icon-button
+    type="button"
+    (click)="onDeleteEntry()">
+    <mat-icon aria-label="Delete entry icon">delete</mat-icon>
+  </button>
 
 </div>

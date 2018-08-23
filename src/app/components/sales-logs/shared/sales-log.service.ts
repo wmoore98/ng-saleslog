@@ -65,8 +65,13 @@ export class SalesLogService {
   }
 
   deleteSalesLog(index: number) {
-    this.salesLogs.splice(index, 1);
+    const salesLog = this.salesLogs.splice(index, 1)[0];
     this.salesLogsChanged.next(this.salesLogs.slice());
+    this.dataStorageService.destroySalesLog(salesLog)
+      .subscribe(
+        (response: Response) => console.log(response),
+        (error) => console.log(error)
+      );
   }
 
 }

@@ -1,15 +1,15 @@
-<div ngClass.lt-md="mt-50" ngClass.gt-sm="mt-100" fxLayout="row" fxLayoutAlign="center">
-  <mat-card ngClass.lt-md="width-600" ngClass.gt-sm="width-800">
+<div ngClass.lt-md="mt-25" ngClass.gt-sm="mt-50" fxLayout="row" fxLayoutAlign="center">
+  <mat-card ngClass.lt-md="width-500" ngClass.gt-sm="width-800">
     <mat-card-header fxLayout="row" fxLayoutAlign="center">
       <mat-card-title>
         <div class="mat-display-1">Sales Log for {{ logId | idToDescription }}</div>
       </mat-card-title>
     </mat-card-header>
     <form
-    class="example-form"
-    [formGroup]="salesLogForm"
-    (ngSubmit)="onSubmit()"
-    #f="ngForm">
+      class="example-form"
+      [formGroup]="salesLogForm"
+      (ngSubmit)="onSubmit()"
+      #f="ngForm">
       <mat-form-field>
         <input matInput [matDatepicker]="dp" placeholder="Month and Year" [formControl]="logDate">
         <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
@@ -35,6 +35,7 @@
             routerLink="../">Cancel</button>
         </div>
       </mat-card-actions>
+      <mat-divider></mat-divider>
 
 
             <!-- <item-control
@@ -45,8 +46,8 @@
             </item-control> -->
 
       <mat-card-content>
-        <div class="row">
-          <div class="col-xs-12" formArrayName="entries">
+        <mat-card>
+          <div formArrayName="entries">
             <!-- <div class="container"
               fxLayout
               fxLayout.xs="column"
@@ -54,24 +55,30 @@
               fxLayoutGap="10px"
               fxLayoutGap.xs="0"
               style="margin-top: 10px"> -->
-            <div class="container"
-              style="margin-top: 10px">
+            <!-- <div
+            class="container mat-elevation-z8"
+            style="margin-top: 10px"
+            > -->
               <app-sales-log-item-edit
                 *ngFor="let item of getControls(); let i = index"
                 [index]="i"
                 [item]="item"
+                (removed)="onEntryRemoved($event)">
                 ></app-sales-log-item-edit>
-            </div>
+            <!-- </div> -->
           </div>
+        </mat-card>
+        <div class="button-row" fxLayout="row" fxLayoutAlign="center">
+            <button mat-fab
+              color="primary"
+              type="button"
+              (click)="onAddEntry()"
+              style="transform: translateY(-50%)"
+              >
+              <mat-icon aria-label="Icon-button with an add icon">add</mat-icon>
+            </button>
         </div>
-        <hr>
       </mat-card-content>
-      <hr>
-      <div class="row">
-        <div class="col-xs-12">
-          <button type="button" class="btn btn-success" (click)="onAddEntry()">Add Entry</button>
-        </div>
-      </div>
-    </form>
+     </form>
   </mat-card>
 </div>

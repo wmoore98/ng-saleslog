@@ -5,3 +5,7 @@
 .example-month-picker .mat-calendar-arrow {
   display: none;
 }
+
+mat-card-content mat-card {
+  margin-top: 4rem;
+}

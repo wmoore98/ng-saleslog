@@ -1,10 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { MatDialog } from '@angular/material';
+import { Decimal } from 'decimal.js';
+
 import { SalesLog } from '../shared/sales-log.model';
 import { SalesLogService } from '../shared/sales-log.service';
 
-import { ActivatedRoute, Params, Router } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
-import { Decimal } from 'decimal.js';
+import { SalesLogDeleteDialogComponent } from './sales-log-delete-dialog/sales-log-delete-dialog.component';
+import { IdToDescriptionPipe } from '../shared/idToDescription.pipe';
+
+// export interface DialogData {
+//   title: string;
+//   msg: string;
+// }
 
 @Component({
   selector: 'app-sales-log-detail',
@@ -15,6 +24,10 @@ export class SalesLogDetailComponent implements OnInit {
 
   salesLog: SalesLog;
   id: number;
+
+  // title: string;
+  // msg: string;
+
 
   displayedColumns: string[] = [
     'index',
@@ -32,7 +45,9 @@ export class SalesLogDetailComponent implements OnInit {
   constructor(private salesLogService: SalesLogService,
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService) { }
+    private authService: AuthService,
+    public dialog: MatDialog,
+    private pipe: IdToDescriptionPipe) { }
 
   ngOnInit() {
     this.route.params
@@ -45,10 +60,21 @@ export class SalesLogDetailComponent implements OnInit {
       );
   }
 
-  onDelete() {
-    // NEED TO ADD CONFIRMATION
-    this.salesLogService.deleteSalesLog(this.id);
-    this.router.navigate(['/sales-logs']);
+  onDelete(): void {
+    const logDescription = this.pipe.transform(this.salesLog.id);
+    const title = 'Delete Sales Log?';
+    const msg = `Are you sure you want to delete the sales log for ${logDescription}?`;
+    const dialogRef = this.dialog.open(SalesLogDeleteDialogComponent, {
+      width: '250px',
+      data: {title: title, msg: msg}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.salesLogService.deleteSalesLog(this.id);
+        this.router.navigate(['/sales-logs']);
+      }
+    });
   }
 
   isAuthenticated() {

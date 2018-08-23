@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -43,6 +43,10 @@ export class SalesLogItemEditComponent implements OnInit {
 
   @Input()
   public item: FormGroup;
+
+  @Output()
+  public removed: EventEmitter<number> = new EventEmitter<number>();
+
 
   constructor() { }
 
@@ -108,8 +112,10 @@ export class SalesLogItemEditComponent implements OnInit {
     currentRow.get('totalGrossAmount').setValue(Decimal.add(frontGross, backGross));
   }
 
+  // Emit 'removed' event with the index of the entry that is being removed
+  // Parent component will handle removing entry
   onDeleteEntry() {
-    null;
+    this.removed.emit(this.index);
   }
 
 }

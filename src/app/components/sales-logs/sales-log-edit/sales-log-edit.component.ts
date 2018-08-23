@@ -102,7 +102,6 @@ export class SalesLogEditComponent implements OnInit {
     return (<FormArray>this.salesLogForm.get('entries')).controls;
   }
 
-
   onSubmit() {
     // Get form data including disabled fields (unit type)
     const data = this.salesLogForm.getRawValue();
@@ -123,9 +122,9 @@ export class SalesLogEditComponent implements OnInit {
     SalesLogItemEditComponent.initEntryForm(entry, entries);
   }
 
-  // onDeleteEntry(index: number) {
-  //   (<FormArray>this.salesLogForm.get('entries')).removeAt(index);
-  // }
+  onEntryRemoved(index: number) {
+    (<FormArray>this.salesLogForm.get('entries')).removeAt(index);
+  }
 
   chosenYearHandler(normalizedYear: Moment) {
     const ctrlValue = this.logDate.value;
