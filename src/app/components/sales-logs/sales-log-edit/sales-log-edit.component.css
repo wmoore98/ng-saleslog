@@ -9,3 +9,8 @@
 mat-card-content mat-card {
   margin-top: 4rem;
 }
+
+.container {
+  overflow-y: scroll;
+  max-height: 24vh;
+}

@@ -39,7 +39,7 @@ export class OldSalesLogItemEditComponent implements OnInit {
     if (this.editMode) {
       stockNumber = this.editItem.stockNumber;
       unitType = this.editItem.unitType;
-      frontGrossAmount = this.editItem.frontGrossAmount || this.editItem.grossAmount;
+      frontGrossAmount = this.editItem.frontGrossAmount || this.editItem.totalGrossAmount;
       backGrossAmount = this.editItem.backGrossAmount || 0;
       // const salesLog = this.salesLogService.getSalesLog(this.idx);
       // id = salesLog.id;

@@ -61,7 +61,7 @@ export class SalesLogItemEditComponent implements OnInit {
         'unitType': new FormControl({value: entry.unitType, disabled: true}, Validators.required),
         'split': new FormControl(entry.split || false, Validators.required),
         'soldDate': new FormControl(entry.soldDate || null, Validators.required),
-        'frontGrossAmount': new FormControl(entry.frontGrossAmount || entry.grossAmount, [
+        'frontGrossAmount': new FormControl(entry.frontGrossAmount || 0, [
           Validators.required,
           Validators.pattern(DECIMAL_2)
         ]),
@@ -70,10 +70,14 @@ export class SalesLogItemEditComponent implements OnInit {
           Validators.pattern(DECIMAL_2)
         ]),
         'totalGrossAmount': new FormControl(
-          {value: Decimal.add(entry.frontGrossAmount || entry.grossAmount, entry.backGrossAmount || 0), disabled: true}, [
+          {value: Decimal.add(entry.frontGrossAmount || 0, entry.backGrossAmount || 0), disabled: true}, [
           Validators.required,
           Validators.pattern(DECIMAL_2)
         ]),
+        'customerName': new FormControl(entry.customerName),
+        'deskManager': new FormControl(entry.deskManager),
+        'financeManager': new FormControl(entry.financeManager),
+        'notes': new FormControl(entry.notes)
       })
     );
   }

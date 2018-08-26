@@ -11,59 +11,126 @@
     </mat-card-actions>
     <mat-divider></mat-divider>
     <mat-card-content>
-      <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <mat-tab-group>
+        <mat-tab label="Log Entry">
+          <div class="container">
+            <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+              <!-- Index Column -->
+              <ng-container matColumnDef="index">
+                <mat-header-cell *matHeaderCellDef> # </mat-header-cell>
+                <mat-cell *matCellDef="let index = index"> {{index + 1}} </mat-cell>
+                <mat-footer-cell *matFooterCellDef>Total</mat-footer-cell>
+              </ng-container>
 
-        <!-- Index Column -->
-        <ng-container matColumnDef="index">
-          <mat-header-cell *matHeaderCellDef> # </mat-header-cell>
-          <mat-cell *matCellDef="let index = index"> {{index + 1}} </mat-cell>
-        </ng-container>
+              <!-- Stock Number Column -->
+              <ng-container matColumnDef="stockNumber">
+                <mat-header-cell *matHeaderCellDef> Stock No. </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.stockNumber}} </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+              </ng-container>
 
-        <!-- Stock Number Column -->
-        <ng-container matColumnDef="stockNumber">
-          <mat-header-cell *matHeaderCellDef> Stock No. </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.stockNumber}} </mat-cell>
-        </ng-container>
+              <!-- Unit Type Column -->
+              <ng-container matColumnDef="unitType">
+                <mat-header-cell *matHeaderCellDef> N/U </mat-header-cell>
+                <mat-cell *matCellDef="let element" [matTooltip]="'Unit type: ' + element.unitType"> {{element.unitType.substr(0,1)}} </mat-cell>
+                <mat-footer-cell *matFooterCellDef>Units:</mat-footer-cell>
+              </ng-container>
 
-        <!-- Unit Type Column -->
-        <ng-container matColumnDef="unitType">
-          <mat-header-cell *matHeaderCellDef> N/U </mat-header-cell>
-          <mat-cell *matCellDef="let element" [matTooltip]="'Unit type: ' + element.unitType"> {{element.unitType.substr(0,1)}} </mat-cell>
-        </ng-container>
+              <!-- Split Column -->
+              <ng-container matColumnDef="split">
+                <mat-header-cell *matHeaderCellDef> Split </mat-header-cell>
+                <mat-cell *matCellDef="let element" [matTooltip]="element.split ? 'Split deal' : 'Deal is not split'"> {{element.split ? 'X' : '-'}} </mat-cell>
+                <mat-footer-cell *matFooterCellDef>{{ getTotalUnits() }}</mat-footer-cell>
+              </ng-container>
 
-        <!-- Split Column -->
-        <ng-container matColumnDef="split">
-          <mat-header-cell *matHeaderCellDef> Split </mat-header-cell>
-          <mat-cell *matCellDef="let element" [matTooltip]="element.split ? 'Split deal' : 'Deal is not split'"> {{element.split ? 'X' : '-'}} </mat-cell>
-        </ng-container>
+              <!-- Sold Date Column -->
+              <ng-container matColumnDef="soldDate">
+                <mat-header-cell *matHeaderCellDef> Sold </mat-header-cell>
+                <mat-cell *matCellDef="let element" matTooltip="Sold date"> {{formatDate(element.soldDate)}} </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+              </ng-container>
 
-        <!-- Sold Date Column -->
-        <ng-container matColumnDef="soldDate">
-          <mat-header-cell *matHeaderCellDef> Sold </mat-header-cell>
-          <mat-cell *matCellDef="let element" matTooltip="Sold date"> {{formatDate(element.soldDate)}} </mat-cell>
-        </ng-container>
+              <!-- Front Gross Amount Column -->
+              <ng-container matColumnDef="frontGrossAmount">
+                <mat-header-cell *matHeaderCellDef> Front Gross </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.frontGrossAmount || 0 | number:'1.2-2'}} </mat-cell>
+                <mat-footer-cell *matFooterCellDef> {{getSumFrontGross() | number:'1.2-2'}} </mat-footer-cell>
+              </ng-container>
 
-        <!-- Front Gross Amount Column -->
-        <ng-container matColumnDef="frontGrossAmount">
-          <mat-header-cell *matHeaderCellDef> Front Gross </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.frontGrossAmount || 0 | number:'1.2-2'}} </mat-cell>
-        </ng-container>
+              <!-- Back Gross Amount Column -->
+              <ng-container matColumnDef="backGrossAmount">
+                <mat-header-cell *matHeaderCellDef> Back Gross </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.backGrossAmount || 0 | number:'1.2-2'}} </mat-cell>
+                <mat-footer-cell *matFooterCellDef> {{getSumBackGross() | number:'1.2-2'}} </mat-footer-cell>
+              </ng-container>
 
-        <!-- Back Gross Amount Column -->
-        <ng-container matColumnDef="backGrossAmount">
-          <mat-header-cell *matHeaderCellDef> Back Gross </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.backGrossAmount || 0 | number:'1.2-2'}} </mat-cell>
-        </ng-container>
+              <!-- Total Gross Amount Column -->
+              <ng-container matColumnDef="totalGrossAmount">
+                <mat-header-cell *matHeaderCellDef> Total Gross </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{getTotalGross(element.frontGrossAmount || 0, element.backGrossAmount || 0) | number:'1.2-2'}} </mat-cell>
+                <mat-footer-cell *matFooterCellDef> {{getSumTotalGross() | number:'1.2-2'}} </mat-footer-cell>
+              </ng-container>
 
-        <!-- Total Gross Amount Column -->
-        <ng-container matColumnDef="totalGrossAmount">
-          <mat-header-cell *matHeaderCellDef> Total Gross </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{getTotalGross(element.frontGrossAmount || 0, element.backGrossAmount || 0) | number:'1.2-2'}} </mat-cell>
-        </ng-container>
+              <mat-header-row *matHeaderRowDef="displayedColumns1"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns1; let index = index;" (click)="myAlert(index);"></mat-row>
+              <mat-footer-row *matFooterRowDef="displayedColumns1"></mat-footer-row>
 
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-      </mat-table>
+            </mat-table>
+          </div>
+        </mat-tab>
+        <mat-tab label="Other Info">
+          <div class="container">
+            <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+              <!-- Index Column -->
+              <ng-container matColumnDef="index">
+                  <mat-header-cell *matHeaderCellDef> # </mat-header-cell>
+                  <mat-cell *matCellDef="let index = index"> {{index + 1}} </mat-cell>
+                  <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
+
+              <!-- Stock Number Column -->
+              <ng-container matColumnDef="stockNumber">
+                  <mat-header-cell *matHeaderCellDef> Stock No. </mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element.stockNumber}} </mat-cell>
+                  <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
+
+              <!-- Customer Name Column -->
+              <ng-container matColumnDef="customerName">
+                  <mat-header-cell *matHeaderCellDef> Customer </mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element.customerName}} </mat-cell>
+                  <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
+
+              <!-- Desk Manager Column -->
+              <ng-container matColumnDef="deskManager">
+                <mat-header-cell *matHeaderCellDef> Manager </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.deskManager}} </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+              </ng-container>
+
+              <!-- Finance Manager Column -->
+              <ng-container matColumnDef="financeManager">
+                <mat-header-cell *matHeaderCellDef> F&I Mgr </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.financeManager}} </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+              </ng-container>
+
+              <!-- Notes Column -->
+              <ng-container matColumnDef="notes">
+                <mat-header-cell *matHeaderCellDef> Notes </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.notes}} </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+              </ng-container>
+
+              <mat-header-row *matHeaderRowDef="displayedColumns2"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns2;"></mat-row>
+              <mat-footer-row *matFooterRowDef="displayedColumns2"></mat-footer-row>
+            </mat-table>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
     </mat-card-content>
   </mat-card>
 </div>

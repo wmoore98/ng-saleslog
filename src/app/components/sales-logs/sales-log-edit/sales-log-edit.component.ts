@@ -14,6 +14,7 @@ import * as _moment from 'moment';
 // added '"allowSyntheticDefaultImports": true' to compiler options in tsconfig.app.json to permit 'import {default...'
 // tslint:disable-next-line:no-duplicate-imports
 import {default as _rollupMoment, Moment} from 'moment';
+import { AuthService } from '../../auth/auth.service';
 
 const moment = _rollupMoment || _moment;
 
@@ -57,7 +58,8 @@ export class SalesLogEditComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
     private router: Router,
-    private salesLogService: SalesLogService) { }
+    private salesLogService: SalesLogService,
+    private authService: AuthService) { }
 
   ngOnInit() {
     this.route.params
@@ -107,6 +109,7 @@ export class SalesLogEditComponent implements OnInit {
     const data = this.salesLogForm.getRawValue();
     // Add ID to data; not part of form data since I don't want to display it
     data.id = this.logId;
+    data.email = this.authService.getEmail();
 
     if (this.editMode) {
       this.salesLogService.updateSalesLog(this.idx, data);
@@ -117,7 +120,8 @@ export class SalesLogEditComponent implements OnInit {
   }
 
   onAddEntry() {
-    const entry = new SalesLogEntry('', '', false, null, 0, 0, 0);
+    const entry = new SalesLogEntry();
+    // const entry = new SalesLogEntry('', '', false, null, 0, 0, 0);
     const entries = (<FormArray>this.salesLogForm.get('entries'));
     SalesLogItemEditComponent.initEntryForm(entry, entries);
   }

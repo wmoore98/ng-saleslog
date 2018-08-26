@@ -9,6 +9,7 @@ import { SalesLogService } from '../shared/sales-log.service';
 import { AuthService } from '../../auth/auth.service';
 import { SalesLogDeleteDialogComponent } from './sales-log-delete-dialog/sales-log-delete-dialog.component';
 import { IdToDescriptionPipe } from '../shared/idToDescription.pipe';
+import { SalesLogEntry } from '../shared/sales-log-entry.model';
 
 // export interface DialogData {
 //   title: string;
@@ -29,7 +30,7 @@ export class SalesLogDetailComponent implements OnInit {
   // msg: string;
 
 
-  displayedColumns: string[] = [
+  displayedColumns1: string[] = [
     'index',
     'stockNumber',
     'unitType',
@@ -39,6 +40,28 @@ export class SalesLogDetailComponent implements OnInit {
     'backGrossAmount',
     'totalGrossAmount'
   ];
+  displayedColumns2: string[] = [
+    'index',
+    'stockNumber',
+    'customerName',
+    'deskManager',
+    'financeManager',
+    'notes'
+  ];
+  // displayedColumns: string[] = [
+  //   'index',
+  //   'stockNumber',
+  //   'unitType',
+  //   'split',
+  //   'soldDate',
+  //   'frontGrossAmount',
+  //   'backGrossAmount',
+  //   'totalGrossAmount',
+  //   'customerName',
+  //   'deskManager',
+  //   'financeManager',
+  //   'notes'
+  // ];
   dataSource = [];
 
 
@@ -82,14 +105,41 @@ export class SalesLogDetailComponent implements OnInit {
   }
 
   getTotalGross(frontGross, backGross) {
-    const totalGross = Decimal.add(frontGross, backGross);
+    const totalGross = Decimal.add(frontGross || 0, backGross || 0);
     return +totalGross;
+  }
+
+  getTotalUnits() {
+    return this.dataSource
+      .map((t: SalesLogEntry) => t.split ? .5 : 1)
+      .reduce((acc, value) => acc + value, 0);
+  }
+  getSumFrontGross() {
+    return this.dataSource
+      .map((t: SalesLogEntry) => t.frontGrossAmount || 0)
+      .reduce((acc, value) => acc + value, 0);
+  }
+
+  getSumBackGross() {
+    return this.dataSource
+      .map((t: SalesLogEntry) => t.backGrossAmount || 0)
+      .reduce((acc, value) => acc + value, 0);
+  }
+
+  getSumTotalGross() {
+    return this.dataSource
+      .map((t: SalesLogEntry) => this.getTotalGross(t.frontGrossAmount, t.backGrossAmount))
+      .reduce((acc, value) => acc + value, 0);
   }
 
   formatDate(inDate) {
     const myDate = new Date(inDate);
     const options = {year: '2-digit', month: '2-digit', day: '2-digit' };
     return myDate.toLocaleDateString('en-US', options);
+  }
+
+  myAlert(row) {
+console.log(row);
   }
 
 }

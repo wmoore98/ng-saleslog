@@ -10,3 +10,32 @@ table {
 mat-card-content {
   margin-top: 4rem;
 }
+
+.container {
+  height: 47vh;
+  overflow: auto;
+}
+
+.mat-column-unitType {
+  justify-content: center;
+}
+
+.mat-column-split {
+  justify-content: center;
+}
+
+.mat-column-frontGrossAmount {
+  justify-content: flex-end;
+}
+
+.mat-column-backGrossAmount {
+  justify-content: flex-end;
+}
+
+.mat-column-totalGrossAmount {
+  justify-content: flex-end;
+}
+
+.mat-footer-cell {
+  font-weight: 500;
+}

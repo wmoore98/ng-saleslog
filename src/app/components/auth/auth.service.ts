@@ -41,17 +41,21 @@ export class AuthService {
       .catch(
         error => console.log(error)
       );
-  }
+    }
 
-  logout() {
-    firebase.auth().signOut();
-    this.token = null;
-    this.router.navigate(['/']);
-  }
+    logout() {
+      firebase.auth().signOut();
+      this.token = null;
+      this.router.navigate(['/']);
+    }
 
-  getUser() {
-    return firebase.auth().currentUser.uid;
-  }
+    getUser() {
+      return firebase.auth().currentUser.uid;
+    }
+
+    getEmail() {
+      return firebase.auth().currentUser.email;
+    }
 
   getToken() {
     firebase.auth().currentUser.getIdToken()
