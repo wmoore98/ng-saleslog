@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
 import { Decimal } from 'decimal.js';
@@ -10,25 +10,20 @@ import { AuthService } from '../../auth/auth.service';
 import { SalesLogDeleteDialogComponent } from './sales-log-delete-dialog/sales-log-delete-dialog.component';
 import { IdToDescriptionPipe } from '../shared/idToDescription.pipe';
 import { SalesLogEntry } from '../shared/sales-log-entry.model';
-
-// export interface DialogData {
-//   title: string;
-//   msg: string;
-// }
+import { SalesLogItemEditDialogComponent } from './sales-log-item-edit-dialog/sales-log-item-edit-dialog.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-sales-log-detail',
   templateUrl: './sales-log-detail.component.html',
   styleUrls: ['./sales-log-detail.component.css']
 })
-export class SalesLogDetailComponent implements OnInit {
+export class SalesLogDetailComponent implements OnInit, OnDestroy {
 
   salesLog: SalesLog;
   id: number;
 
-  // title: string;
-  // msg: string;
-
+  subscription: Subscription;
 
   displayedColumns1: string[] = [
     'index',
@@ -73,7 +68,7 @@ export class SalesLogDetailComponent implements OnInit {
     private pipe: IdToDescriptionPipe) { }
 
   ngOnInit() {
-    this.route.params
+    this.subscription = this.route.params
       .subscribe(
         (params: Params) => {
           this.id = +params['id'];
@@ -82,6 +77,7 @@ export class SalesLogDetailComponent implements OnInit {
         }
       );
   }
+
 
   onDelete(): void {
     const logDescription = this.pipe.transform(this.salesLog.id);
@@ -138,8 +134,31 @@ export class SalesLogDetailComponent implements OnInit {
     return myDate.toLocaleDateString('en-US', options);
   }
 
-  myAlert(row) {
-console.log(row);
+  editItem(index: number) {
+
+    const dialogRef = this.dialog.open(SalesLogItemEditDialogComponent, {
+      width: '150dp',
+      data: {salesLogEntry: this.dataSource[index]}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.dataSource[index] = result;
+        // console.log('after', result);
+        // console.log('after data', this.dataSource[index]);
+        this.salesLogService.updateSalesLog(this.id, this.salesLog);
+        // this.router.navigate(['/sales-logs']);
+        // this.router.navigate(['/sales-logs/' + this.id]);
+        // this.router.navigate(['.'], {relativeTo: this.route});
+        // this.salesLogService.deleteSalesLog(this.id);
+        // this.router.navigate(['/sales-logs']);
+      }
+    });
+
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
 }

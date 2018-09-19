@@ -4,7 +4,7 @@
       <div class="mat-display-1">Sales Log for {{ salesLog.id | idToDescription }}</div>
     </mat-card-header>
       <mat-card-actions>
-      <div class="button-row" fxLayout="row" fxLayoutAlign="center">
+      <div class="button-row" fxLayout="row" fxLayoutAlign="space-evenly center">
         <button mat-raised-button color="primary" [routerLink]="['edit']" *ngIf="isAuthenticated()">Edit</button>
         <button mat-raised-button color="warn" (click)="onDelete()" *ngIf="isAuthenticated()">Delete</button>
       </div>
@@ -72,7 +72,7 @@
               </ng-container>
 
               <mat-header-row *matHeaderRowDef="displayedColumns1"></mat-header-row>
-              <mat-row *matRowDef="let row; columns: displayedColumns1; let index = index;" (click)="myAlert(index);"></mat-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns1; let index = index;" (click)="editItem(index);"></mat-row>
               <mat-footer-row *matFooterRowDef="displayedColumns1"></mat-footer-row>
 
             </mat-table>

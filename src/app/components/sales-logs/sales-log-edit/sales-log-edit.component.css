@@ -7,10 +7,11 @@
 }
 
 mat-card-content mat-card {
-  margin-top: 4rem;
+  margin-top: 3rem;
+  background-color: rgba(49, 78, 209, 0.1);
 }
 
 .container {
   overflow-y: scroll;
-  max-height: 24vh;
+  max-height: 40vh;
 }

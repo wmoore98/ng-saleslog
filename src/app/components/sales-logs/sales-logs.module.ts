@@ -17,6 +17,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { IdToDescriptionPipe } from './shared/idToDescription.pipe';
 import { SalesLogItemEditComponent } from './sales-log-edit/sales-log-item-edit/sales-log-item-edit.component';
 import { SalesLogDeleteDialogComponent } from './sales-log-detail/sales-log-delete-dialog/sales-log-delete-dialog.component';
+import { SalesLogItemEditDialogComponent } from './sales-log-detail/sales-log-item-edit-dialog/sales-log-item-edit-dialog.component';
 
 @NgModule({
   declarations: [
@@ -28,9 +29,13 @@ import { SalesLogDeleteDialogComponent } from './sales-log-detail/sales-log-dele
     SalesLogEditComponent,
     IdToDescriptionPipe,
     SalesLogItemEditComponent,
-    SalesLogDeleteDialogComponent
+    SalesLogDeleteDialogComponent,
+    SalesLogItemEditDialogComponent
   ],
-  entryComponents: [SalesLogDeleteDialogComponent],
+  entryComponents: [
+    SalesLogDeleteDialogComponent,
+    SalesLogItemEditDialogComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,
